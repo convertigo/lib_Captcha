@@ -1,0 +1,125 @@
+accessibility: Hidden
+comment: Creates a fresh signed ALTCHA v2 challenge with the official Java library called directly from the sequence.
+includeResponseElement: false
+↓CreateChallenge [steps.SimpleStep-1787232036738]: 
+  comment: Calls the official ALTCHA Java library directly with native Convertigo symbol resolution.
+  expression: |
+    'var Altcha = Packages.org.altcha.altcha.v2.Altcha;
+    var ConcurrentHashMap = Packages.java.util.concurrent.ConcurrentHashMap;
+    var SecureRandom = Packages.java.security.SecureRandom;
+    var Base64 = Packages.java.util.Base64;
+    var LinkedHashMap = Packages.java.util.LinkedHashMap;
+    var JavaString = Packages.java.lang.String;
+    var project = context.project;
+    var configuredHmacSecret = "${lib_Captcha.altcha.hmac.secret=}";
+    var configuredKeySecret = "${lib_Captcha.altcha.key.secret=}";
+    var configuredAlgorithm = "${lib_Captcha.altcha.algorithm=PBKDF2/SHA-256}";
+    var configuredCost = "${lib_Captcha.altcha.cost=5000}";
+    var configuredMinCounter = "${lib_Captcha.altcha.counter.min=5000}";
+    var configuredMaxCounter = "${lib_Captcha.altcha.counter.max=10000}";
+    var configuredExpiresInSeconds = "${lib_Captcha.altcha.expires.seconds=300}";
+    
+    var secureRandom = project.get("lib_Captcha.altcha.secureRandom");
+    var runtimeSecrets = project.get("lib_Captcha.altcha.runtimeSecrets");
+    if (secureRandom == null || runtimeSecrets == null) {
+        synchronized(project, function () {
+            if (project.get("lib_Captcha.altcha.secureRandom") == null) {
+                project.set("lib_Captcha.altcha.secureRandom", new SecureRandom());
+            }
+            if (project.get("lib_Captcha.altcha.runtimeSecrets") == null) {
+                project.set("lib_Captcha.altcha.runtimeSecrets", new ConcurrentHashMap());
+            }
+        });
+        secureRandom = project.get("lib_Captcha.altcha.secureRandom");
+        runtimeSecrets = project.get("lib_Captcha.altcha.runtimeSecrets");
+    }
+    
+    function secret(configured, slot) {
+        if (configured != null && String(configured).trim().length > 0) {
+            return new JavaString(String(configured));
+        }
+        var bytes = Packages.java.lang.reflect.Array.newInstance(Packages.java.lang.Byte.TYPE, 32);
+        secureRandom.nextBytes(bytes);
+        var generated = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        var previous = runtimeSecrets.putIfAbsent(slot, generated);
+        return previous == null ? generated : previous;
+    }
+    
+    var hmacSecret = secret(configuredHmacSecret, "signature");
+    var keySecret = secret(configuredKeySecret, "key");
+    var algorithm = configuredAlgorithm;
+    var cost = Packages.java.lang.Integer.parseInt(configuredCost);
+    var minCounter = Packages.java.lang.Integer.parseInt(configuredMinCounter);
+    var maxCounter = Packages.java.lang.Integer.parseInt(configuredMaxCounter);
+    var expiresInSeconds = Packages.java.lang.Long.parseLong(configuredExpiresInSeconds);
+    var challengeAction = action == null ? "" : String(action);
+    
+    if (!/^(PBKDF2\/SHA-(256|384|512)|SHA-(256|384|512))$/.test(algorithm)) {
+        throw "Unsupported ALTCHA algorithm";
+    }
+    if (cost < 1 || cost > 1000000) {
+        throw "ALTCHA cost must be between 1 and 1000000";
+    }
+    if (minCounter < 0 || maxCounter <= minCounter) {
+        throw "Invalid ALTCHA counter range";
+    }
+    if (expiresInSeconds < 1 || expiresInSeconds > 86400) {
+        throw "ALTCHA expiry must be between 1 and 86400 seconds";
+    }
+    if (challengeAction.length > 128) {
+        throw "ALTCHA action must not exceed 128 characters";
+    }
+    if (String(hmacSecret).length < 16 || String(keySecret).length < 16) {
+        throw "ALTCHA secrets must contain at least 16 characters";
+    }
+    
+    var data = null;
+    if (challengeAction.trim().length > 0) {
+        data = new LinkedHashMap();
+        data.put("action", new JavaString(challengeAction.trim()));
+    }
+    
+    var counter = minCounter + secureRandom.nextInt(maxCounter - minCounter);
+    var options = new Altcha.CreateChallengeOptions()
+        .algorithm(new JavaString(algorithm))
+        .cost(cost)
+        .counter(counter)
+        .expiresInSeconds(expiresInSeconds)
+        .data(data)
+        .hmacSignatureSecret(hmacSecret)
+        .hmacKeySignatureSecret(keySecret);
+    
+    challengeObject = JSON.parse(String(Altcha.createChallenge(options).toJson()));'
+↓parameters [steps.JsonToXmlStep-1787232077554]: 
+  comment: ALTCHA v2 challenge parameters.
+  jsonObject: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: JS
+        - →→: challengeObject.parameters
+  jsonSample: '{"algorithm":"PBKDF2/SHA-256","cost":5000,"expiresAt":1893456000,"keyLength":32,"keyPrefix":"00","keySignature":"sample","nonce":"sample","salt":"sample"}'
+  key: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: PLAIN
+        - →→: parameters
+↓signature [steps.JsonFieldStep-1787232077575]: 
+  comment: HMAC signature of the challenge parameters.
+  key: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: PLAIN
+        - →→: signature
+  value: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: JS
+        - →→: challengeObject.signature
+↓action [variables.RequestableVariable-1787232036712]: 
+  cachedKey: false
+  comment: 'Optional business action bound to the signed challenge, for example `signup` or `password-reset`. Pass the same value as `expectedAction` during verification. Maximum length: 128 characters.'
+  description: Optional business action embedded in signed challenge metadata.

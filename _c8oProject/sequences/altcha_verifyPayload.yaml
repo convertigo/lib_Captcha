@@ -1,0 +1,180 @@
+accessibility: Private
+comment: Privately verifies ALTCHA v2 payloads, expected business action, and replay.
+includeResponseElement: false
+↓VerifyPayload [steps.SimpleStep-1787232036815]: 
+  comment: Uses native Convertigo symbols, the official ALTCHA verifier, and the project-shared node-local replay registry.
+  expression: |
+    'var Altcha = Packages.org.altcha.altcha.v2.Altcha;
+    var ConcurrentHashMap = Packages.java.util.concurrent.ConcurrentHashMap;
+    var SecureRandom = Packages.java.security.SecureRandom;
+    var Base64 = Packages.java.util.Base64;
+    var JavaString = Packages.java.lang.String;
+    var project = context.project;
+    var configuredHmacSecret = "${lib_Captcha.altcha.hmac.secret=}";
+    var configuredKeySecret = "${lib_Captcha.altcha.key.secret=}";
+    var startedAt = Packages.java.lang.System.nanoTime();
+    
+    function elapsed() {
+        return Math.floor((Packages.java.lang.System.nanoTime() - startedAt) / 1000000);
+    }
+    
+    function resultObject(verified, replayed, expired, invalidSignature, invalidSolution, time, error) {
+        return {
+            status: verified ? "ok" : "error",
+            verified: verified,
+            replayed: replayed,
+            expired: expired,
+            invalidSignature: invalidSignature,
+            invalidSolution: invalidSolution,
+            time: Number(time),
+            error: error
+        };
+    }
+    
+    var secureRandom = project.get("lib_Captcha.altcha.secureRandom");
+    var runtimeSecrets = project.get("lib_Captcha.altcha.runtimeSecrets");
+    var consumed = project.get("lib_Captcha.altcha.consumed");
+    if (secureRandom == null || runtimeSecrets == null || consumed == null) {
+        synchronized(project, function () {
+            if (project.get("lib_Captcha.altcha.secureRandom") == null) {
+                project.set("lib_Captcha.altcha.secureRandom", new SecureRandom());
+            }
+            if (project.get("lib_Captcha.altcha.runtimeSecrets") == null) {
+                project.set("lib_Captcha.altcha.runtimeSecrets", new ConcurrentHashMap());
+            }
+            if (project.get("lib_Captcha.altcha.consumed") == null) {
+                project.set("lib_Captcha.altcha.consumed", new ConcurrentHashMap());
+            }
+        });
+        secureRandom = project.get("lib_Captcha.altcha.secureRandom");
+        runtimeSecrets = project.get("lib_Captcha.altcha.runtimeSecrets");
+        consumed = project.get("lib_Captcha.altcha.consumed");
+    }
+    
+    function secret(configured, slot) {
+        if (configured != null && String(configured).trim().length > 0) {
+            return new JavaString(String(configured));
+        }
+        var bytes = Packages.java.lang.reflect.Array.newInstance(Packages.java.lang.Byte.TYPE, 32);
+        secureRandom.nextBytes(bytes);
+        var generated = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        var previous = runtimeSecrets.putIfAbsent(slot, generated);
+        return previous == null ? generated : previous;
+    }
+    
+    function consume(signature, challengeExpiresAt) {
+        if (signature == null || String(signature).trim().length == 0) {
+            return false;
+        }
+        var now = Math.floor(Packages.java.lang.System.currentTimeMillis() / 1000);
+        if (consumed.size() >= 100000) {
+            var iterator = consumed.entrySet().iterator();
+            while (iterator.hasNext()) {
+                var entry = iterator.next();
+                if (Number(entry.getValue()) <= now) {
+                    consumed.remove(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+        if (consumed.size() >= 100000) {
+            return false;
+        }
+        var expiresAt = challengeExpiresAt != null && Number(challengeExpiresAt) > now
+            ? Number(challengeExpiresAt)
+            : now + 600;
+        var key = new JavaString(String(signature));
+        var expiry = Packages.java.lang.Long.valueOf(expiresAt);
+        var previous = consumed.putIfAbsent(key, expiry);
+        if (previous == null) {
+            return true;
+        }
+        return Number(previous) <= now && consumed.replace(key, previous, expiry);
+    }
+    
+    try {
+        var base64Payload = payload == null ? "" : String(payload);
+        if (base64Payload.trim().length == 0) {
+            verificationObject = resultObject(false, false, false, null, null, elapsed(), "missing_payload");
+        } else if (base64Payload.length > 65536) {
+            verificationObject = resultObject(false, false, false, null, null, elapsed(), "payload_too_large");
+        } else {
+            var hmacSecret = secret(configuredHmacSecret, "signature");
+            var keySecret = secret(configuredKeySecret, "key");
+            if (String(hmacSecret).length < 16 || String(keySecret).length < 16) {
+                throw new Packages.java.lang.IllegalStateException("ALTCHA secrets are too short");
+            }
+    
+            var parsedPayload = Altcha.parsePayload(new JavaString(base64Payload.trim()));
+            var challenge = parsedPayload.challenge();
+            var verification = Altcha.verifySolution(
+                challenge,
+                parsedPayload.solution(),
+                hmacSecret,
+                keySecret,
+                null);
+    
+            var verified = String(verification.verified()) == "true";
+            var replayed = false;
+            var actionMismatch = false;
+            var wantedAction = expectedAction == null ? "" : String(expectedAction).trim();
+    
+            if (verified && wantedAction.length > 0) {
+                var challengeData = challenge.parameters().data();
+                var actualAction = challengeData == null ? null : challengeData.get("action");
+                actionMismatch = actualAction == null || wantedAction != String(actualAction);
+                verified = !actionMismatch;
+            }
+    
+            var replayProtection = preventReplay == null || String(preventReplay) != "false";
+            if (verified && replayProtection) {
+                replayed = !consume(challenge.signature(), challenge.parameters().expiresAt());
+                verified = !replayed;
+            }
+    
+            var invalidSignature = verification.invalidSignature();
+            var invalidSolution = verification.invalidSolution();
+            verificationObject = resultObject(
+                verified,
+                replayed,
+                String(verification.expired()) == "true",
+                invalidSignature == null ? null : String(invalidSignature) == "true",
+                invalidSolution == null ? null : String(invalidSolution) == "true",
+                verification.time(),
+                verified ? "" : replayed ? "replayed" : actionMismatch ? "action_mismatch" : "invalid_payload");
+        }
+    } catch (e) {
+        var javaError = e.javaException == null ? e : e.javaException;
+        var malformed = javaError instanceof Packages.java.lang.IllegalArgumentException;
+        verificationObject = resultObject(
+            false, false, false, null, null, elapsed(),
+            malformed ? "malformed_payload" : "verification_error");
+    }'
+↓verification [steps.JsonToXmlStep-1787232036829]: 
+  comment: Returns a stable verification result contract.
+  jsonObject: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: JS
+        - →→: verificationObject
+  jsonSample: '{"status":"ok","verified":true,"replayed":false,"expired":false,"invalidSignature":false,"invalidSolution":false,"time":1,"error":""}'
+  key: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: PLAIN
+        - →→: verification
+↓payload [variables.RequestableVariable-1787232036776]: 
+  cachedKey: false
+  comment: Required Base64-encoded ALTCHA payload returned by the client widget after solving the challenge. The maximum accepted length is 65,536 characters.
+  description: Base64-encoded ALTCHA payload produced by the widget.
+  required: true
+↓preventReplay [variables.RequestableVariable-1787232036793]: 
+  cachedKey: false
+  comment: Controls single-use protection for valid challenges. Defaults to `true`; when enabled, a second verification of the same challenge is rejected with the `replayed` error.
+  description: Reject a second valid use of the same challenge signature.
+  value: true
+↓expectedAction [variables.RequestableVariable-1787232223808]: 
+  cachedKey: false
+  comment: Optional business action expected in the signed challenge data. When provided, verification fails with `action_mismatch` unless it exactly matches the `action` used to create the challenge.
+  description: Signed business action expected in the challenge metadata.

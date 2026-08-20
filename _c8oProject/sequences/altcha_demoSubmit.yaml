@@ -1,0 +1,110 @@
+accessibility: Hidden
+comment: Demo form submission endpoint. Receives business form data and delegates CAPTCHA validation to the private altcha_verifyPayload sequence. The submission is accepted only for the captcha-demo action with replay prevention enabled.
+↓PrepareCaptchaPolicy [steps.SimpleStep-1787242443423]: 
+  comment: Defines server-owned verification policy values before invoking the private verifier.
+  expression: |
+    preventReplay = 'true';
+    expectedAction = 'captcha-demo';
+↓VerifyCaptcha [steps.SequenceStep-1787242425685]: 
+  comment: Calls the private ALTCHA verifier. Its internal document is kept as a source but is not exposed by the business sequence.
+  sourceSequence: lib_Captcha.altcha_verifyPayload
+  ↓payload [variables.StepVariable-1787242425687]: 
+    comment: Forwards the incoming ALTCHA payload to the private verifier.
+    required: true
+  ↓preventReplay [variables.StepVariable-1787242425689]: 
+    comment: Enables node-local one-time payload replay prevention.
+    value: true
+  ↓expectedAction [variables.StepVariable-1787242425691]: 
+    comment: Requires the challenge action used by the demo SharedComponent.
+    value: captcha-demo
+↓Submission [steps.JsonObjectStep-1787242923424]: 
+  comment: Stable business response independent from the private verifier document structure.
+  key: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: PLAIN
+        - →→: submission
+  ↓Accepted [steps.JsonFieldStep-1787242923434]: 
+    comment: True only when the private server-side ALTCHA verification succeeds.
+    key: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: PLAIN
+          - →→: accepted
+    type: bool
+    value: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: SOURCE
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1787242425685
+            - java.lang.String: 
+              - ↑value: ./document/verification/verified/text()
+  ↓Status [steps.JsonFieldStep-1787242923436]: 
+    comment: High-level status returned by the private verifier.
+    key: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: PLAIN
+          - →→: status
+    value: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: SOURCE
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1787242425685
+            - java.lang.String: 
+              - ↑value: ./document/verification/status/text()
+  ↓Error [steps.JsonFieldStep-1787242923438]: 
+    comment: Machine-readable rejection reason, empty when verification succeeds.
+    key: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: PLAIN
+          - →→: error
+    value: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: SOURCE
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1787242425685
+            - java.lang.String: 
+              - ↑value: ./document/verification/error/text()
+  ↓VerificationTime [steps.JsonFieldStep-1787242923440]: 
+    comment: Server-side ALTCHA verification duration in milliseconds.
+    key: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: PLAIN
+          - →→: verificationTime
+    type: number
+    value: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: SOURCE
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1787242425685
+            - java.lang.String: 
+              - ↑value: ./document/verification/time/text()
+↓fullName [variables.RequestableVariable-1787242425677]: 
+  comment: Required display name submitted by the demonstration form.
+  required: true
+↓email [variables.RequestableVariable-1787242425681]: 
+  comment: Required email address submitted by the demonstration form.
+  required: true
+↓payload [variables.RequestableVariable-1787242425683]: 
+  comment: Verified ALTCHA payload emitted by the client widget and revalidated on the server.
+  required: true

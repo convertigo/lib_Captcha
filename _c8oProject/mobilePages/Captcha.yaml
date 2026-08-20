@@ -1,0 +1,378 @@
+↑isRoot: true
+comment: Palette-first demonstration page for the reusable AltchaWidget SharedComponent.
+icon: shield-checkmark
+scriptContent: 
+  - xmlizable: 
+    - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
+    - com.twinsoft.convertigo.beans.common.FormatedContent: 
+      →: |
+        /*Begin_c8o_PageImport*/
+        /*End_c8o_PageImport*/
+        /*Begin_c8o_PageDeclaration*/
+        /*End_c8o_PageDeclaration*/
+        /*Begin_c8o_PageConstructor*/
+        /*End_c8o_PageConstructor*/
+        /*Begin_c8o_PageFunction*/
+        /*End_c8o_PageFunction*/
+segment: captcha
+title: CAPTCHA demo
+↓CaptchaDemoStyle [ngx.components.UIStyle-1787241206641]: 
+  comment: Presentation styles for the palette-first CAPTCHA demonstration page.
+  styleContent: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
+      - com.twinsoft.convertigo.beans.common.FormatedContent: 
+        →: |
+          ':host {
+            --captcha-demo-ink: #172033;
+            --captcha-demo-muted: #5b6475;
+          }
+          
+          .captcha-demo-content {
+            --background: linear-gradient(145deg, #f6f9ff 0%, #eef4fb 48%, #f8fafc 100%);
+          }
+          
+          .captcha-demo-shell {
+            width: min(720px, 100%);
+            margin: 1.5rem auto;
+          }
+          
+          .captcha-demo-heading {
+            color: var(--captcha-demo-ink);
+            margin: 0 0 .5rem;
+          }
+          
+          .captcha-demo-lead,
+          .captcha-demo-help {
+            color: var(--captcha-demo-muted);
+            line-height: 1.55;
+          }
+          
+          .captcha-demo-card {
+            margin: 1.5rem 0 0;
+            border: 1px solid #dfe4ec;
+            border-radius: 1rem;
+            box-shadow: 0 18px 50px rgba(23, 32, 51, .09);
+          }
+          
+          .captcha-demo-form {
+            display: grid;
+            gap: .9rem;
+          }
+          
+          .captcha-demo-form ion-item {
+            --border-color: #dfe4ec;
+            --border-radius: .65rem;
+            --background: #f9fbfd;
+          }
+          
+          .captcha-demo-widget {
+            display: block;
+            margin: .35rem 0;
+          }
+          
+          .captcha-demo-status {
+            display: block;
+            min-height: 1.4rem;
+            color: var(--captcha-demo-muted);
+            text-align: center;
+            line-height: 1.4;
+          }
+          '
+↓DemoHeader [ngx.components.UIDynamicElement-1787241206699]: 
+  beanData: '{"ionBean":"Header"}'
+  comment: Ionic header created from the Header palette component.
+  tagName: ion-header
+  ↓DemoToolbar [ngx.components.UIDynamicElement-1787241207249]: 
+    beanData: '{"ionBean":"ToolBar"}'
+    comment: Ionic toolbar created from the ToolBar palette component.
+    tagName: ion-toolbar
+    ↓DemoTitle [ngx.components.UIDynamicElement-1787241207251]: 
+      beanData: '{"ionBean":"BarTitle"}'
+      comment: Title created from the Bar Title palette component.
+      tagName: ion-title
+      ↓DemoTitleText [ngx.components.UIText-1787241207253]: 
+        comment: Visible page title.
+        textValue: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+            - MobileSmartSourceType: plain:ALTCHA CAPTCHA demo
+↓DemoContent [ngx.components.UIDynamicElement-1787241207255]: 
+  beanData: '{"ionBean":"Content"}'
+  comment: Ionic content created from the Content palette component.
+  tagName: ion-content
+  ↓ContentClass [ngx.components.UIAttribute-1787241207257]: 
+    attrName: class
+    attrValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+        - MobileSmartSourceType: plain:captcha-demo-content
+  ↓DemoShell [ngx.components.UIDynamicElement-1787241207259]: 
+    beanData: '{"ionBean":"DivTag"}'
+    comment: Responsive layout container created from the Div palette component.
+    tagName: div
+    ↓ShellClass [ngx.components.UIAttribute-1787241207261]: 
+      attrName: class
+      attrValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: plain:captcha-demo-shell
+    ↓DemoHeading [ngx.components.UIDynamicElement-1787241207263]: 
+      beanData: '{"ionBean":"Heading1"}'
+      comment: Main heading created from the H1 palette component.
+      tagName: h1
+      ↓HeadingClass [ngx.components.UIAttribute-1787241207265]: 
+        attrName: class
+        attrValue: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+            - MobileSmartSourceType: plain:captcha-demo-heading
+      ↓HeadingText [ngx.components.UIText-1787241207267]: 
+        textValue: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+            - MobileSmartSourceType: plain:Private, self-hosted CAPTCHA
+    ↓DemoLead [ngx.components.UIDynamicElement-1787241207269]: 
+      beanData: '{"ionBean":"Paragraph"}'
+      comment: Introduction created from the Paragraph palette component.
+      tagName: p
+      ↓LeadClass [ngx.components.UIAttribute-1787241207271]: 
+        attrName: class
+        attrValue: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+            - MobileSmartSourceType: plain:captcha-demo-lead
+      ↓LeadText [ngx.components.UIText-1787241207273]: 
+        textValue: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+            - MobileSmartSourceType: plain:This page demonstrates the reusable AltchaWidget SharedComponent with the public challenge sequence provided by lib_Captcha.
+    ↓CaptchaCard [ngx.components.UIDynamicElement-1787241207275]: 
+      beanData: '{"ionBean":"Card"}'
+      comment: CAPTCHA demonstration card created from the Card palette component.
+      tagName: ion-card
+      ↓CardClass [ngx.components.UIAttribute-1787241207277]: 
+        attrName: class
+        attrValue: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+            - MobileSmartSourceType: plain:captcha-demo-card
+      ↓CaptchaCardHeader [ngx.components.UIDynamicElement-1787241207279]: 
+        beanData: '{"ionBean":"CardHeader"}'
+        comment: Card header created from the Card Header palette component.
+        tagName: ion-card-header
+        ↓CaptchaCardTitle [ngx.components.UIDynamicElement-1787241207281]: 
+          beanData: '{"ionBean":"CardTitle"}'
+          comment: Card title created from the Card Title palette component.
+          tagName: ion-card-title
+          ↓CaptchaCardTitleText [ngx.components.UIText-1787241207283]: 
+            textValue: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                - MobileSmartSourceType: plain:Complete the verification
+      ↓CaptchaCardContent [ngx.components.UIDynamicElement-1787241207285]: 
+        beanData: '{"ionBean":"CardContent"}'
+        comment: Card body containing the complete palette-built demonstration form.
+        tagName: ion-card-content
+        ↓CaptchaHelp [ngx.components.UIDynamicElement-1787242564836]: 
+          beanData: '{"ionBean":"Paragraph"}'
+          comment: Explains the local proof-of-work and server-side verification flow.
+          tagName: p
+          ↓HelpClass [ngx.components.UIAttribute-1787242564838]: 
+            attrName: class
+            attrValue: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                - MobileSmartSourceType: plain:captcha-demo-help
+          ↓CaptchaHelpText [ngx.components.UIText-1787242564840]: 
+            comment: Form instructions.
+            textValue: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                - MobileSmartSourceType: plain:Enter your details, complete ALTCHA, then submit. The proof is checked again by the private server sequence.
+        ↓DemoForm [ngx.components.UIForm-1787242564842]: 
+          comment: Reactive Ionic form built entirely from Convertigo palette objects.
+          identifier: demoForm
+          ↓FullNameItem [ngx.components.UIDynamicElement-1787242565392]: 
+            beanData: '{"ionBean":"FormItem"}'
+            comment: Container for the required full-name control.
+            tagName: ion-item
+            ↓FullNameInput [ngx.components.UIDynamicElement-1787242565394]: 
+              beanData: |
+                '{
+                 "ionBean": "Input",
+                 "ControlName": "plain:fullName",
+                 "ClearInput": "plain:true",
+                 "Placeholder": "plain:Full name",
+                 "Required": "plain:true"
+                }'
+              comment: Required full name entered by the demo user.
+              tagName: ion-input
+          ↓EmailItem [ngx.components.UIDynamicElement-1787242565396]: 
+            beanData: '{"ionBean":"FormItem"}'
+            comment: Container for the required email control.
+            tagName: ion-item
+            ↓EmailInput [ngx.components.UIDynamicElement-1787242565398]: 
+              beanData: |
+                '{
+                 "ionBean": "Input",
+                 "ControlName": "plain:email",
+                 "Placeholder": "plain:Email address",
+                 "Required": "plain:true"
+                }'
+              comment: Required email address entered by the demo user.
+              tagName: ion-input
+              ↓EmailType [ngx.components.UIAttribute-1787242613057]: 
+                attrName: type
+                attrValue: 
+                  - xmlizable: 
+                    - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                    - MobileSmartSourceType: plain:email
+                comment: Uses the browser email input mode.
+          ↓CaptchaWidget [ngx.components.UIUseShared-1787242565400]: 
+            comment: Reusable ALTCHA SharedComponent used as the anti-bot field.
+            identifier: captchaWidget
+            sharedcomponent: lib_Captcha.Application.NgxApp.AltchaWidget
+            ↓WidgetClass [ngx.components.UIAttribute-1787242565974]: 
+              attrName: class
+              attrValue: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                  - MobileSmartSourceType: plain:captcha-demo-widget
+            ↓action [ngx.components.UIUseVariable-1787242565976]: 
+              comment: Binds the challenge to the demo submission action.
+              varValue: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                  - MobileSmartSourceType: plain:captcha-demo
+            ↓language [ngx.components.UIUseVariable-1787242565978]: 
+              comment: Displays the widget in English.
+              varValue: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                  - MobileSmartSourceType: plain:en
+            ↓type [ngx.components.UIUseVariable-1787242565980]: 
+              comment: Uses the checkbox interaction.
+              varValue: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                  - MobileSmartSourceType: plain:checkbox
+            ↓display [ngx.components.UIUseVariable-1787242565982]: 
+              comment: Uses the standard embedded layout.
+              varValue: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                  - MobileSmartSourceType: plain:standard
+            ↓CaptchaVerified [ngx.components.UIControlEvent-1787242565984]: 
+              attrName: (Verified)
+              comment: Stores the verified ALTCHA payload for the form submission.
+              eventName: Verified
+              ↓StoreCaptchaPayload [ngx.components.UIDynamicAction-1787242566226]: 
+                beanData: |
+                  '{
+                   "ionBean": "SetLocalAction",
+                   "Property": "plain:captchaPayload",
+                   "Value": "script:parent.out && parent.out.payload ? parent.out.payload : parent.out"
+                  }'
+                comment: Stores the payload emitted by AltchaWidget.
+                ↓SetReadyStatus [ngx.components.UIDynamicAction-1787242566476]: 
+                  beanData: |
+                    '{
+                     "ionBean": "SetLocalAction",
+                     "Property": "plain:submitStatus",
+                     "Value": "script:''CAPTCHA verified. You can submit the form.''"
+                    }'
+                  comment: Tells the user that the form can now be submitted.
+            ↓CaptchaExpired [ngx.components.UIControlEvent-1787242566478]: 
+              attrName: (Expired)
+              comment: Clears the stored proof when the ALTCHA challenge expires.
+              eventName: Expired
+              ↓ClearCaptchaPayload [ngx.components.UIDynamicAction-1787242566480]: 
+                beanData: |
+                  '{
+                   "ionBean": "SetLocalAction",
+                   "Property": "plain:captchaPayload",
+                   "Value": "script:null"
+                  }'
+                comment: Prevents submission with an expired proof.
+                ↓SetExpiredStatus [ngx.components.UIDynamicAction-1787242566482]: 
+                  beanData: |
+                    '{
+                     "ionBean": "SetLocalAction",
+                     "Property": "plain:submitStatus",
+                     "Value": "script:''The CAPTCHA expired. Please verify again.''"
+                    }'
+                  comment: Prompts the user to solve a fresh challenge.
+          ↓SubmitDemo [ngx.components.UIDynamicElement-1787242566484]: 
+            beanData: |
+              '{
+               "ionBean": "SubmitButton",
+               "Disabled": "script:!this.local.captchaPayload",
+               "IonColor": "plain:primary",
+               "IonExpand": "plain:block"
+              }'
+            comment: Submits the business fields and ALTCHA payload to the server sequence.
+            tagName: ion-button
+            ↓SubmitText [ngx.components.UIText-1787242566486]: 
+              comment: Visible submit label.
+              textValue: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                  - MobileSmartSourceType: plain:Submit protected form
+          ↓SubmitStatus [ngx.components.UIDynamicElement-1787242566488]: 
+            beanData: '{"ionBean":"Note"}'
+            comment: Displays the current CAPTCHA or submission status.
+            tagName: ion-note
+            ↓SubmitStatusText [ngx.components.UIText-1787242566490]: 
+              comment: Dynamic status bound to the page local state.
+              textValue: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                  - MobileSmartSourceType: script:this.local.submitStatus || 'Complete the CAPTCHA to enable submission.'
+            ↓StatusClass [ngx.components.UIAttribute-1787242613607]: 
+              attrName: class
+              attrValue: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                  - MobileSmartSourceType: plain:captcha-demo-status
+              comment: Styles the live form status.
+          ↓SubmitForm [ngx.components.UIControlEvent-1787242566492]: 
+            attrName: (ngSubmit)
+            comment: Calls the protected demo business sequence when the Ionic form is submitted.
+            eventName: onSubmit
+            ↓CallDemoSubmit [ngx.components.UIDynamicAction-1787242566494]: 
+              beanData: '{"ionBean":"CallSequenceAction","requestable":"plain:lib_Captcha.altcha_demoSubmit"}'
+              comment: Sends the form data and CAPTCHA payload to altcha_demoSubmit.
+              ↓fullName [ngx.components.UIControlVariable-1787242566496]: 
+                comment: Maps the full-name form control.
+                varValue: 
+                  - xmlizable: 
+                    - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                    - MobileSmartSourceType: script:this.demoForm.value.fullName
+              ↓email [ngx.components.UIControlVariable-1787242566498]: 
+                comment: Maps the email form control.
+                varValue: 
+                  - xmlizable: 
+                    - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                    - MobileSmartSourceType: script:this.demoForm.value.email
+              ↓payload [ngx.components.UIControlVariable-1787242566500]: 
+                comment: Maps the payload emitted by AltchaWidget.
+                varValue: 
+                  - xmlizable: 
+                    - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                    - MobileSmartSourceType: script:this.local.captchaPayload
+              ↓ShowSubmissionResult [ngx.components.UIDynamicAction-1787242566502]: 
+                beanData: |
+                  '{
+                   "ionBean": "SetLocalAction",
+                   "Property": "plain:submitStatus",
+                   "Value": "script:out && out.submission && out.submission.accepted ? ''Form accepted: CAPTCHA verified by the server.'' : ''Form rejected: '' + (out && out.submission && out.submission.error ? out.submission.error : ''server-side CAPTCHA verification failed.'')"
+                  }'
+                comment: Reads the CallSequenceAction output and displays the stable submission response.
+          ↓FormClass [ngx.components.UIAttribute-1787242612507]: 
+            attrName: class
+            attrValue: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                - MobileSmartSourceType: plain:captcha-demo-form
+            comment: Applies the demo form layout.

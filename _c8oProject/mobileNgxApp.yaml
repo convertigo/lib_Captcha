@@ -59,7 +59,8 @@ componentScriptContent:
         '
 tplProjectName: mobilebuilder_tpl_8_4_0_ngx
 ↓Menu [ngx.components.UIDynamicMenu-1787231287382]: 🗏 mobileMenus/Menu.yaml
-↓Page [ngx.components.PageComponent-1787231287383]: 🗏 mobilePages/Page.yaml
+↓AltchaWidget [ngx.components.UISharedRegularComponent-1787234224092]: 🗏 mobileSharedComponents/AltchaWidget.yaml
+↓Captcha [ngx.components.PageComponent-1787240765613]: 🗏 mobilePages/Captcha.yaml
 ↓Style [ngx.components.UIStyle-1787231287384]: 
   comment: You can add some global application styles here
   styleContent: 

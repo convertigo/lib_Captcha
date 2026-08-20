@@ -1,0 +1,261 @@
+comment: Reusable ALTCHA client widget for Convertigo NGX applications. Wraps the official `altcha` Web Component and exposes configurable challenge, presentation, localization, automation, and runtime options. The `Verified`, `StateChanged`, and `Expired` outputs allow host applications to react to widget events.
+scriptContent: 
+  - xmlizable: 
+    - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
+    - com.twinsoft.convertigo.beans.common.FormatedContent: 
+      →: |
+        '/*Begin_c8o_CompImport*/
+        /*End_c8o_CompImport*/
+        /*Begin_c8o_CompDeclaration*/
+        	private altchaVerifiedListener: any;
+        	private altchaStateChangedListener: any;
+        	private altchaExpiredListener: any;
+        /*End_c8o_CompDeclaration*/
+        /*Begin_c8o_CompConstructor*/
+        /*End_c8o_CompConstructor*/
+        /*Begin_c8o_CompInitialization*/
+        /*End_c8o_CompInitialization*/
+        /*Begin_c8o_CompFinalization*/
+        	const widget: any = this.altchaWidget && this.altchaWidget.nativeElement ? this.altchaWidget.nativeElement : this.altchaWidget;
+        	if (widget) {
+        		if (this.altchaVerifiedListener) {
+        			widget.removeEventListener(''verified'', this.altchaVerifiedListener);
+        		}
+        		if (this.altchaStateChangedListener) {
+        			widget.removeEventListener(''statechange'', this.altchaStateChangedListener);
+        		}
+        		if (this.altchaExpiredListener) {
+        			widget.removeEventListener(''expired'', this.altchaExpiredListener);
+        		}
+        	}
+        /*End_c8o_CompFinalization*/
+        /*Begin_c8o_CompChanges*/
+        /*End_c8o_CompChanges*/
+        /*Begin_c8o_CompDoCheck*/
+        /*End_c8o_CompDoCheck*/
+        /*Begin_c8o_CompAfterContentInit*/
+        /*End_c8o_CompAfterContentInit*/
+        /*Begin_c8o_CompAfterContentChecked*/
+        /*End_c8o_CompAfterContentChecked*/
+        /*Begin_c8o_CompAfterViewInit*/
+        	const widget: any = this.altchaWidget && this.altchaWidget.nativeElement ? this.altchaWidget.nativeElement : this.altchaWidget;
+        	if (widget) {
+        		this.altchaVerifiedListener = (event: any) => this.Verified.emit(event && event.detail !== undefined ? event.detail : event);
+        		this.altchaStateChangedListener = (event: any) => this.StateChanged.emit(event && event.detail !== undefined ? event.detail : event);
+        		this.altchaExpiredListener = (event: any) => this.Expired.emit(event && event.detail !== undefined ? event.detail : event);
+        		widget.addEventListener(''verified'', this.altchaVerifiedListener);
+        		widget.addEventListener(''statechange'', this.altchaStateChangedListener);
+        		widget.addEventListener(''expired'', this.altchaExpiredListener);
+        	}
+        /*End_c8o_CompAfterViewInit*/
+        /*Begin_c8o_CompAfterViewChecked*/
+        /*End_c8o_CompAfterViewChecked*/
+        /*Begin_c8o_CompFunction*/
+        	public getAltchaChallenge(): string {
+        		let base = this.challengeUrl ? String(this.challengeUrl) : '''';
+        		if (!base) {
+        			const endpoint = this.c8o && this.c8o.endpoint
+        				? String(this.c8o.endpoint).replace(/\/+$/, '''')
+        				: '''';
+        			const projectsMarker = ''/projects/'';
+        			const projectsIndex = endpoint.lastIndexOf(projectsMarker);
+        			const engineBase = projectsIndex >= 0
+        				? endpoint.substring(0, projectsIndex)
+        				: endpoint;
+        			base = engineBase + ''/projects/lib_Captcha/.json?__sequence=altcha_createChallenge'';
+        		}
+        		if (!this.action) {
+        			return base;
+        		}
+        		try {
+        			const url = new URL(base, document.baseURI);
+        			url.searchParams.set(''action'', String(this.action));
+        			return url.toString();
+        		} catch (_) {
+        			return base + (base.indexOf(''?'') >= 0 ? ''&'' : ''?'') + ''action='' + encodeURIComponent(String(this.action));
+        		}
+        	}
+        
+        	public getAltchaConfiguration(): string {
+        		return JSON.stringify(Object.assign({}, this.configuration || {}, {
+        			minDuration: Number(this.minDuration),
+        			timeout: Number(this.timeout),
+        			hideLogo: !!this.hideLogo,
+        			hideFooter: !!this.hideFooter,
+        			validationMessage: this.validationMessage,
+        			debug: !!this.debug
+        		}));
+        	}
+        /*End_c8o_CompFunction*/'
+↓challengeUrl [ngx.components.UICompVariable-1787234454772]: 
+  comment: Optional absolute challenge URL. When empty, the component derives the portable lib_Captcha sequence URL from the public Convertigo SDK endpoint.
+↓action [ngx.components.UICompVariable-1787234454774]: 
+  comment: Optional action bound to the challenge. The value is appended to the challenge URL and must match expectedAction during server-side verification.
+↓name [ngx.components.UICompVariable-1787234454776]: 
+  comment: Name of the hidden form field that receives the verified ALTCHA payload.
+  value: '''altcha'''
+↓type [ngx.components.UICompVariable-1787234454778]: 
+  comment: 'Interaction style: ''checkbox'', ''switch'', or ''native''.'
+  value: '''checkbox'''
+↓auto [ngx.components.UICompVariable-1787234454780]: 
+  comment: 'Automatic verification trigger: ''off'', ''onfocus'', ''onload'', or ''onsubmit''.'
+  value: '''off'''
+↓display [ngx.components.UICompVariable-1787234454782]: 
+  comment: 'Widget layout: ''standard'', ''bar'', ''floating'', ''overlay'', or ''invisible''.'
+  value: '''standard'''
+↓language [ngx.components.UICompVariable-1787234454784]: 
+  comment: ISO language code used by the widget. English is bundled by default.
+  value: '''en'''
+↓theme [ngx.components.UICompVariable-1787234454786]: 
+  comment: Widget theme name, normally 'default' or 'dark'.
+  value: '''default'''
+↓workers [ngx.components.UICompVariable-1787234454788]: 
+  comment: Number of Web Workers used for proof-of-work computation.
+  value: 2
+↓minDuration [ngx.components.UICompVariable-1787234454790]: 
+  comment: Minimum verification duration in milliseconds.
+  value: 500
+↓timeout [ngx.components.UICompVariable-1787234454792]: 
+  comment: Maximum verification duration in milliseconds.
+  value: 90000
+↓hideLogo [ngx.components.UICompVariable-1787234454794]: 
+  comment: Hides the ALTCHA logo when true.
+  value: false
+↓hideFooter [ngx.components.UICompVariable-1787234454796]: 
+  comment: Hides the ALTCHA attribution footer when true.
+  value: false
+↓validationMessage [ngx.components.UICompVariable-1787234454798]: 
+  comment: HTML5 validation message shown while verification is incomplete.
+  value: '''Please complete the verification.'''
+↓debug [ngx.components.UICompVariable-1787234454800]: 
+  comment: Enables ALTCHA client-side debug logging when true.
+  value: false
+↓configuration [ngx.components.UICompVariable-1787234454802]: 
+  comment: Additional ALTCHA configuration object. Explicit component variables override properties with the same name.
+  value: '{}'
+↓Verified [ngx.components.UICompEvent-1787234454804]: 
+  attrName: Verified
+  comment: Emits the ALTCHA verified event detail, including the generated payload.
+↓StateChanged [ngx.components.UICompEvent-1787234454806]: 
+  attrName: StateChanged
+  comment: Emits the ALTCHA statechange event detail whenever the widget state changes.
+↓Expired [ngx.components.UICompEvent-1787234454808]: 
+  attrName: Expired
+  comment: Emits the ALTCHA expired event detail when the current challenge expires.
+↓LoadAltcha [ngx.components.UISharedComponentEvent-1787234454810]: 
+  comment: Loads and registers the official ALTCHA Web Component after this shared component view is initialized.
+  ↓ImportAltcha [ngx.components.UICustomAsyncAction-1787234455636]: 
+    actionValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
+        - com.twinsoft.convertigo.beans.common.FormatedContent: 
+          →: |
+            		await import('altcha/i18n');
+            		return;
+            
+    comment: Dynamically imports the official ALTCHA browser package with all bundled translations and registers the altcha-widget custom element.
+    package_dependencies: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: altcha
+              - java.lang.String: 
+                - ↑value: 3.2.1
+↓AltchaStyle [ngx.components.UIStyle-1787234455638]: 
+  comment: Keeps the wrapper and the ALTCHA custom element responsive inside host layouts.
+  styleContent: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
+      - com.twinsoft.convertigo.beans.common.FormatedContent: 
+        →: |
+          ':host {
+            display: block;
+          }
+          
+          .altcha-widget-wrapper,
+          altcha-widget {
+            display: block;
+            width: 100%;
+          }
+          '
+↓WidgetWrapper [ngx.components.UIElement-1787234455640]: 
+  comment: Responsive container for the ALTCHA Web Component.
+  tagName: div
+  ↓WrapperClass [ngx.components.UIAttribute-1787234458092]: 
+    attrName: class
+    attrValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+        - MobileSmartSourceType: plain:altcha-widget-wrapper
+    comment: Stable CSS hook for host application styling.
+  ↓AltchaElement [ngx.components.UIElement-1787234458094]: 
+    comment: Official ALTCHA Web Component instance.
+    identifier: altchaWidget
+    tagName: altcha-widget
+    ↓Configuration [ngx.components.UIAttribute-1787234847223]: 
+      attrName: configuration
+      attrValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:getAltchaConfiguration()
+      comment: Serializes advanced ALTCHA options and merges them with the explicit shared component inputs.
+    ↓Workers [ngx.components.UIAttribute-1787234845739]: 
+      attrName: workers
+      attrValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:workers
+      comment: Binds the number of ALTCHA proof-of-work workers.
+    ↓Theme [ngx.components.UIAttribute-1787234845041]: 
+      attrName: theme
+      attrValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:theme
+      comment: Binds the ALTCHA theme.
+    ↓Language [ngx.components.UIAttribute-1787234843980]: 
+      attrName: language
+      attrValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:language
+      comment: Binds the ALTCHA language.
+    ↓Display [ngx.components.UIAttribute-1787234843195]: 
+      attrName: display
+      attrValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:display
+      comment: Binds the ALTCHA display mode.
+    ↓Auto [ngx.components.UIAttribute-1787234841644]: 
+      attrName: auto
+      attrValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:auto
+      comment: Binds the ALTCHA automatic verification trigger.
+    ↓Type [ngx.components.UIAttribute-1787234840674]: 
+      attrName: type
+      attrValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:type
+      comment: Binds the ALTCHA interaction type.
+    ↓FieldName [ngx.components.UIAttribute-1787234840510]: 
+      attrName: name
+      attrValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:name
+      comment: Binds the hidden form field name to the shared component input.
+    ↓Challenge [ngx.components.UIAttribute-1787234840508]: 
+      attrName: challenge
+      attrValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:getAltchaChallenge()
+      comment: Builds the challenge URL from challengeUrl and the optional action binding.

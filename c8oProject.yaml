@@ -1,10 +1,37 @@
 ↑convertigo: 8.4.0.m006
 ↓lib_Captcha [core.Project]: 
-  comment: Convertigo NGX builder Project
+  comment: |
+    '# lib_Captcha
+    
+    Self-hosted Convertigo library for creating and verifying **ALTCHA v2** challenges using the official Java implementation.
+    
+    ## Sequences
+    
+    - `altcha_createChallenge`: creates a signed challenge for the ALTCHA widget.
+    - `altcha_verifyPayload`: verifies the payload, expected action, and replay status.
+    
+    ## Global symbols
+    
+    | Symbol | Required | Default | Description |
+    | --- | --- | --- | --- |
+    | `lib_Captcha.altcha.hmac.secret` | Yes in production | empty | Secret used to sign challenges. Use a random value containing at least 16 characters. |
+    | `lib_Captcha.altcha.key.secret` | Yes in production | empty | Independent secret used to sign derived keys. Use a random value containing at least 16 characters. |
+    | `lib_Captcha.altcha.algorithm` | No | `PBKDF2/SHA-256` | ALTCHA algorithm used for the challenge. |
+    | `lib_Captcha.altcha.cost` | No | `5000` | PBKDF2 derivation cost. |
+    | `lib_Captcha.altcha.counter.min` | No | `5000` | Minimum value of the random counter. |
+    | `lib_Captcha.altcha.counter.max` | No | `10000` | Exclusive maximum value of the random counter. |
+    | `lib_Captcha.altcha.expires.seconds` | No | `300` | Challenge validity period in seconds. |
+    
+    Symbols ending in `.secret` are masked by Convertigo. When the two secrets are not configured, the library generates temporary values suitable for development only. These values are lost when the engine restarts and are not shared between cluster nodes.
+    
+    Symbols are resolved directly in the JavaScript steps using Convertigo''s native symbol substitution syntax.'
   contextTimeout: 59
   corsOrigin: =Origin
   httpSessionTimeout: 60
   ↓void [connectors.SqlConnector]: 🗏 connectors/void.yaml
+  ↓altcha_createChallenge [sequences.GenericSequence]: 🗏 sequences/altcha_createChallenge.yaml
+  ↓altcha_demoSubmit [sequences.GenericSequence]: 🗏 sequences/altcha_demoSubmit.yaml
+  ↓altcha_verifyPayload [sequences.GenericSequence]: 🗏 sequences/altcha_verifyPayload.yaml
   ↓project1 [references.ProjectSchemaReference]: 
     projectName: mobilebuilder_tpl_8_4_0_ngx=https://github.com/convertigo/c8oprj-mobilebuilder-tpl/archive/mobilebuilder_tpl_8_4_0_ngx.zip
   ↓Application [core.MobileApplication]: 
