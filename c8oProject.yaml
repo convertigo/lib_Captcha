@@ -1,9 +1,7 @@
 ↑convertigo: 8.4.0.m006
 ↓lib_Captcha [core.Project]: 
   comment: |
-    '# lib_Captcha
-    
-    Self-hosted Convertigo library for creating and verifying **ALTCHA v2** challenges using the official Java implementation.
+    'Self-hosted Convertigo library for creating and verifying **ALTCHA v2** challenges using the official Java implementation.
     
     ## Sequences
     

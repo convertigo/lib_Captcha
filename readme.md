@@ -3,8 +3,6 @@
 
 # lib_Captcha
 
-# lib_Captcha
-
 Self-hosted Convertigo library for creating and verifying **ALTCHA v2** challenges using the official Java implementation.
 
 ## Sequences
@@ -50,13 +48,13 @@ For more technical informations : [documentation](./project.md)
      <tr><td>To contribute</td><td>
 
      ```
-     lib_Captcha=/Users/opic/runtime-New84/lib_Captcha/.git:branch=master
+     lib_Captcha=https://github.com/convertigo/lib_Captcha.git:branch=master
      ```
      </td></tr>
      <tr><td>To simply use</td><td>
 
      ```
-     lib_Captcha=/Users/opic/runtime-New84/lib_Captcha//archive/master.zip
+     lib_Captcha=https://github.com/convertigo/lib_Captcha/archive/master.zip
      ```
      </td></tr>
     </table>

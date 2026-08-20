@@ -1,8 +1,6 @@
 
 # ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/core/images/project_color_16x16.png?raw=true "Project") lib_Captcha
 
-# lib_Captcha
-
 Self-hosted Convertigo library for creating and verifying **ALTCHA v2** challenges using the official Java implementation.
 
 ## Sequences
