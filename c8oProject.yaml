@@ -117,7 +117,8 @@
     
     Symbols ending in `.secret` are masked by Convertigo. When the two secrets are not configured, the library generates temporary values suitable for development only. These values are lost when the engine restarts and are not shared between cluster nodes. Configure stable secrets in every production environment and use identical secrets on every node that must validate the same challenges.
     
-    Symbols are resolved directly in the JavaScript steps using Convertigo native symbol substitution syntax.'
+    Symbols are resolved directly in the JavaScript steps using Convertigo native symbol substitution syntax.
+    '
   contextTimeout: 59
   corsOrigin: =Origin
   httpSessionTimeout: 60
