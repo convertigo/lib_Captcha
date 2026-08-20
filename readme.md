@@ -27,6 +27,7 @@ Symbols ending in `.secret` are masked by Convertigo. When the two secrets are n
 Symbols are resolved directly in the JavaScript steps using Convertigo's native symbol substitution syntax.
 
 
+
 For more technical informations : [documentation](./project.md)
 
 - [Installation](#installation)

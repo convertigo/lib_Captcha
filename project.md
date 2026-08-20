@@ -24,6 +24,7 @@ Symbols ending in `.secret` are masked by Convertigo. When the two secrets are n
 
 Symbols are resolved directly in the JavaScript steps using Convertigo's native symbol substitution syntax.
 
+
 <details><summary><span style="color:DarkGoldenRod"><i>Connectors</i></span></summary><blockquote><p>
 
 
